@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool — RenewYou</title>
+    <link rel="stylesheet" href="global.css">
+    <style>
+        .pdp-wrapper {
+            padding: 14vh 0 var(--sp-3xl);
+        }
+
+        .pdp-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            align-items: start;
+            border: 1px solid var(--clr-border);
+        }
+
+        .pdp-gallery {
+            background: var(--clr-surface-alt);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            border-right: 1px solid var(--clr-border);
+            position: sticky;
+            top: 10vh;
+        }
+
+        .pdp-main-img {
+            width: 75%;
+            height: 75%;
+            object-fit: contain;
+        }
+
+        .pdp-info-col {
+            display: flex;
+            flex-direction: column;
+            padding: var(--sp-2xl);
+        }
+
+        .pdp-tag {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: 400;
+            color: var(--clr-accent);
+            margin-bottom: var(--sp-md);
+            display: block;
+        }
+
+        .pdp-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            line-height: 1.1;
+            margin-bottom: var(--sp-md);
+        }
+
+        .pdp-price {
+            font-family: var(--ff-body);
+            font-size: 1.4rem;
+            font-weight: 300;
+            color: var(--clr-dark);
+            margin-bottom: var(--sp-xl);
+            padding-bottom: var(--sp-xl);
+            border-bottom: 1px solid var(--clr-border);
+        }
+
+        .pdp-desc {
+            font-size: 1rem;
+            color: var(--clr-text);
+            margin-bottom: var(--sp-xl);
+            line-height: 1.7;
+            font-weight: 300;
+        }
+
+        /* Specs list */
+        .pdp-specs {
+            margin-bottom: var(--sp-xl);
+        }
+
+        .pdp-specs li {
+            padding: 0.6rem 0;
+            border-bottom: 1px solid var(--clr-border);
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--clr-text);
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .pdp-specs li::before {
+            content: '—';
+            color: var(--clr-accent);
+        }
+
+        /* Subscription perks block (boxes only) */
+        .pdp-perks {
+            margin-bottom: var(--sp-xl);
+            padding: var(--sp-lg);
+            background: var(--clr-surface-alt);
+            border: 1px solid var(--clr-border);
+        }
+
+        .pdp-perks-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--clr-text-light);
+            margin-bottom: var(--sp-md);
+        }
+
+        .pdp-perks li {
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+            color: var(--clr-text);
+            display: flex;
+            gap: 0.8rem;
+            align-items: center;
+            border-bottom: 1px solid var(--clr-border);
+        }
+
+        .pdp-perks li:last-child {
+            border-bottom: none;
+        }
+
+        .pdp-perks li::before {
+            content: '✓';
+            color: var(--clr-accent);
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .pdp-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+
+        .pdp-actions .btn {
+            border-radius: 0;
+        }
+
+        .pdp-actions .btn-outline {
+            border-right: none;
+        }
+
+        @media(max-width: 992px) {
+            .pdp-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .pdp-gallery {
+                aspect-ratio: 4/3;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid var(--clr-border);
+            }
+
+            .pdp-info-col {
+                padding: var(--sp-xl) var(--sp-lg);
+            }
+        }
+
+        @media(max-width: 600px) {
+            .pdp-actions {
+                grid-template-columns: 1fr;
+            }
+
+            .pdp-actions .btn-outline {
+                border-right: 1px solid;
+                border-bottom: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar scrolled">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">RenewYou.</a>
+            <div class="nav-links desktop-only">
+                <a href="shop.html">The Collection</a>
+                <a href="quiz.html">Diagnostic</a>
+            </div>
+            <a href="cart.html" class="nav-cart">
+                <span>Basket</span>
+                <span class="cart-badge" id="cartBadge"></span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="container pdp-wrapper">
+        <nav
+            style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--clr-text-light); margin-bottom:var(--sp-xl);">
+            <a href="index.html" style="color:var(--clr-text-light);">Home</a>
+            <span style="margin:0 0.5rem;">→</span>
+            <a href="shop.html" style="color:var(--clr-text-light);">Collection</a>
+            <span style="margin:0 0.5rem;">→</span>
+            <span id="pdpBreadcrumb" style="color:var(--clr-dark);">Product</span>
+        </nav>
+        <div id="pdpContent"></div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner container">
+            <div class="nav-logo">RenewYou.</div>
+            <p style="font-size:var(--fs-xs); color:var(--clr-text-light); margin-top:var(--sp-sm);">© 2026 RenewYou
+                Wellness.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        // app.js renderProductPage() will fire automatically and populate #pdpContent.
+        // We only need to update the breadcrumb after render.
+        document.addEventListener('DOMContentLoaded', () => {
+            const el = document.getElementById('pdpBreadcrumb');
+            const titleEl = document.querySelector('.pdp-title');
+            if (el && titleEl) el.textContent = titleEl.textContent;
+        });
+    </script>
+</body>
+
+</html>

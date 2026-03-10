@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basket — RenewYou</title>
+    <link rel="stylesheet" href="global.css">
+    <style>
+        .cart-page {
+            padding: 20vh 0 var(--sp-3xl);
+            min-height: 80vh;
+        }
+
+        .cart-header {
+            font-size: clamp(3rem, 6vw, 5rem);
+            margin-bottom: var(--sp-2xl);
+            text-align: center;
+        }
+
+        .cart-content-wrapper {
+            background: #fff;
+            border: 1px solid var(--clr-border);
+            border-radius: var(--radius-lg);
+            padding: var(--sp-2xl);
+            box-shadow: var(--shadow-soft);
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Qty Controls reset for the new aesthetic */
+        .qty-minus,
+        .qty-plus {
+            background: var(--clr-surface-alt);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .qty-minus:hover,
+        .qty-plus:hover {
+            background: var(--clr-accent);
+            color: #fff;
+        }
+
+        @media(max-width: 768px) {
+            .cart-content-wrapper {
+                padding: var(--sp-lg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">RenewYou.</a>
+            <div class="nav-links desktop-only">
+                <a href="shop.html">The Collection</a>
+                <a href="quiz.html">Diagnostic Form</a>
+            </div>
+            <a href="cart.html" class="nav-cart">
+                <span style="font-size:var(--fs-sm); font-weight:600; color:var(--clr-text);">Basket</span>
+                <span class="cart-badge" id="cartBadge"></span>
+            </a>
+        </div>
+    </nav>
+
+    <div class="container cart-page">
+        <h1 class="cart-header">Your Basket.</h1>
+
+        <div class="cart-content-wrapper">
+            <!-- Cart Content (App.js renders here) -->
+            <div id="cartContent">
+                <!-- Filled by app.js -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer" style="margin-top:var(--sp-3xl);">
+        <div class="footer-inner container">
+            <div class="nav-logo">RenewYou.</div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

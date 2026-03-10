@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Collection — RenewYou</title>
+    <meta name="description"
+        content="Explore the full RenewYou collection of curated mental wellness tools and subscription boxes.">
+    <link rel="stylesheet" href="global.css">
+    <style>
+        body {
+            background: var(--clr-bg);
+        }
+
+        /* ---- Shop Page Layout ---- */
+        .shop-page {
+            padding-top: 6rem;
+            /* navbar height offset */
+            min-height: 100vh;
+        }
+
+        /* ---- Hero Bar ---- */
+        .shop-hero {
+            padding: var(--sp-3xl) 0 var(--sp-xl);
+            border-bottom: 1px solid var(--clr-border);
+        }
+
+        .shop-hero-inner {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: var(--sp-xl);
+        }
+
+        .shop-hero-left h1 {
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .shop-hero-left p {
+            font-size: 1rem;
+            color: var(--clr-text-light);
+            margin-top: var(--sp-sm);
+            max-width: 420px;
+        }
+
+        .product-count {
+            font-family: var(--ff-display);
+            font-size: 5rem;
+            color: var(--clr-border);
+            line-height: 1;
+            user-select: none;
+        }
+
+        @media(max-width: 768px) {
+            .shop-hero-inner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: var(--sp-md);
+            }
+
+            .product-count {
+                display: none;
+            }
+        }
+
+        /* ---- Filter Bar ---- */
+        .filter-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--sp-md) 0;
+            border-bottom: 1px solid var(--clr-border);
+            gap: var(--sp-lg);
+        }
+
+        .filter-pills {
+            display: flex;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .filter-pill {
+            padding: 0.6rem 1.5rem;
+            font-size: 0.8rem;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--clr-text-light);
+            border: 1px solid var(--clr-border);
+            margin-left: -1px;
+            cursor: pointer;
+            transition: var(--transition);
+            background: #fff;
+        }
+
+        .filter-pill:first-child {
+            margin-left: 0;
+        }
+
+        .filter-pill:hover {
+            color: var(--clr-dark);
+            border-color: var(--clr-dark);
+            z-index: 1;
+            position: relative;
+        }
+
+        .filter-pill.active {
+            background: var(--clr-dark);
+            color: #fff;
+            border-color: var(--clr-dark);
+            z-index: 1;
+            position: relative;
+        }
+
+        .filter-count {
+            font-size: 0.75rem;
+            color: var(--clr-text-light);
+            letter-spacing: 0.05em;
+        }
+
+        @media(max-width: 600px) {
+            .filter-count {
+                display: none;
+            }
+        }
+
+        /* ---- Product Grid ---- */
+        .shop-grid-wrapper {
+            padding: var(--sp-2xl) 0 var(--sp-3xl);
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0;
+        }
+
+        @media(max-width: 992px) {
+            .shop-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 600px) {
+            .shop-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ---- Product Card ---- */
+        .shop-card {
+            display: flex;
+            flex-direction: column;
+            border-right: 1px solid var(--clr-border);
+            border-bottom: 1px solid var(--clr-border);
+            background: var(--clr-bg);
+            text-decoration: none;
+            color: inherit;
+            transition: background 0.3s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shop-card:nth-child(3n) {
+            border-right: none;
+        }
+
+        @media(max-width: 992px) {
+            .shop-card:nth-child(3n) {
+                border-right: 1px solid var(--clr-border);
+            }
+
+            .shop-card:nth-child(2n) {
+                border-right: none;
+            }
+        }
+
+        @media(max-width: 600px) {
+            .shop-card:nth-child(2n) {
+                border-right: 1px solid var(--clr-border);
+            }
+
+            .shop-card {
+                border-right: none;
+            }
+        }
+
+        .shop-card:hover {
+            background: #fff;
+        }
+
+        /* Image area */
+        .shop-card-img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: var(--clr-surface-alt);
+            position: relative;
+        }
+
+        .shop-card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.5s var(--ease);
+        }
+
+        .shop-card:hover .shop-card-img img {
+            transform: scale(1.06);
+        }
+
+        /* Quick add - appears on hover */
+        .shop-card-quick {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 1rem;
+            background: rgba(43, 43, 43, 0.9);
+            color: #fff;
+            text-align: center;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            transform: translateY(100%);
+            transition: transform 0.4s var(--ease);
+            cursor: pointer;
+        }
+
+        .shop-card:hover .shop-card-quick {
+            transform: translateY(0);
+        }
+
+        /* Info area */
+        .shop-card-info {
+            padding: var(--sp-md) var(--sp-lg);
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            flex-grow: 1;
+            border-top: 1px solid var(--clr-border);
+        }
+
+        .shop-card-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--clr-accent);
+            font-weight: 400;
+        }
+
+        .shop-card-title {
+            font-family: var(--ff-display);
+            font-size: 1.3rem;
+            font-weight: 400;
+            color: var(--clr-dark);
+            line-height: 1.2;
+        }
+
+        .shop-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: var(--sp-sm);
+        }
+
+        .shop-card-price {
+            font-family: var(--ff-body);
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--clr-text);
+        }
+
+        .shop-card-arrow {
+            font-size: 1.2rem;
+            color: var(--clr-text-light);
+            transition: transform 0.3s var(--ease);
+        }
+
+        .shop-card:hover .shop-card-arrow {
+            transform: translateX(4px);
+            color: var(--clr-dark);
+        }
+
+        /* No results */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: var(--sp-3xl) 0;
+            color: var(--clr-text-light);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body class="shop-page">
+
+    <!-- NAVBAR -->
+    <nav class="navbar scrolled" id="navbar">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">RenewYou.</a>
+            <div class="nav-links desktop-only">
+                <a href="shop.html" style="color:var(--clr-dark);">The Collection</a>
+                <a href="quiz.html">Diagnostic</a>
+            </div>
+            <a href="cart.html" class="nav-cart">
+                <span>Basket</span>
+                <span class="cart-badge" id="cartBadge"></span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- SHOP HERO -->
+    <header class="shop-hero">
+        <div class="container shop-hero-inner">
+            <div class="shop-hero-left">
+                <span class="section-label">The Collection</span>
+                <h1>Curated<br><em>Tools</em></h1>
+                <p>Each object selected for a single purpose — to anchor your nervous system in simplicity.</p>
+            </div>
+            <div class="product-count" id="productCountDisplay">00</div>
+        </div>
+    </header>
+
+    <!-- FILTER BAR -->
+    <div class="container">
+        <div class="filter-bar">
+            <div class="filter-pills" id="filterPills">
+                <button class="filter-pill active" data-filter="all">All</button>
+                <button class="filter-pill" data-filter="item">Individual</button>
+                <button class="filter-pill" data-filter="box">Ritual Box</button>
+            </div>
+            <span class="filter-count" id="filterCountLabel"></span>
+        </div>
+    </div>
+
+    <!-- PRODUCT GRID -->
+    <div class="shop-grid-wrapper">
+        <div class="container">
+            <div class="shop-grid" id="shopProductGrid">
+                <!-- Rendered by JS below -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner container">
+            <div class="nav-logo">RenewYou.</div>
+            <div
+                style="display:flex; gap:var(--sp-lg); margin:var(--sp-md) 0; font-size:0.85rem; text-transform:uppercase; letter-spacing:0.1em;">
+                <a href="index.html">Home</a>
+                <a href="quiz.html">Diagnostic</a>
+                <a href="cart.html">Basket</a>
+            </div>
+            <p style="font-size:var(--fs-xs); color:var(--clr-text-light);">© 2026 RenewYou Wellness.</p>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            // Pull products from the same PRODUCTS array in app.js scope
+            // app.js doesn't expose an API, so we replicate the product list here for rendering
+            // and rely on app.js event delegation for add-to-cart clicks.
+
+            const PRODUCTS_SHOP = [
+                { id: 'journal', type: 'item', name: 'Mindfulness Journal', price: 799, image: 'assets/journal.png' },
+                { id: 'lavender-oil', type: 'item', name: 'French Lavender Oil', price: 599, image: 'assets/oils.png' },
+                { id: 'eucalyptus-oil', type: 'item', name: 'Eucalyptus Focus Oil', price: 599, image: 'assets/eucalyptus_oil.png' },
+                { id: 'candle', type: 'item', name: 'Sandalwood Soy Candle', price: 499, image: 'assets/sandalwood_candle.png' },
+                { id: 'sleep-mask', type: 'item', name: 'Silk Sleep Mask', price: 699, image: 'assets/rest_box.png' },
+                { id: 'worry-stone', type: 'item', name: 'Polished Worry Stone', price: 399, image: 'assets/grounding_box.png' },
+                { id: 'weighted-blanket', type: 'item', name: 'Deep Pressure Blanket', price: 12900, image: 'assets/calm_box.png' },
+                { id: 'therapy-lamp', type: 'item', name: 'SAD Light Therapy Lamp', price: 4500, image: 'assets/journal.png' },
+                { id: 'sound-machine', type: 'item', name: 'White Noise Machine', price: 3500, image: 'assets/grounding_box.png' },
+                { id: 'meditation-cushion', type: 'item', name: 'Zafu Meditation Cushion', price: 5900, image: 'assets/rest_box.png' },
+                { id: 'calm-box', type: 'box', name: 'The Calm Protocol Box', price: 2499, image: 'assets/calm_box.png' },
+                { id: 'rest-box', type: 'box', name: 'The Rest Box', price: 2499, image: 'assets/rest_box.png' },
+                { id: 'clarity-box', type: 'box', name: 'The Clarity Box', price: 2499, image: 'assets/clarity_box.png' },
+                { id: 'grounding-box', type: 'box', name: 'The Grounding Box', price: 2499, image: 'assets/grounding_box.png' },
+            ];
+
+            function formatPrice(n) {
+                return '₹' + n.toLocaleString('en-IN');
+            }
+
+            function renderGrid(filter) {
+                const grid = document.getElementById('shopProductGrid');
+                const countEl = document.getElementById('productCountDisplay');
+                const countLabel = document.getElementById('filterCountLabel');
+
+                const filtered = filter === 'all' ? PRODUCTS_SHOP : PRODUCTS_SHOP.filter(p => p.type === filter);
+
+                countEl.textContent = String(filtered.length).padStart(2, '0');
+                countLabel.textContent = `${filtered.length} object${filtered.length !== 1 ? 's' : ''}`;
+
+                if (filtered.length === 0) {
+                    grid.innerHTML = `<div class="no-results">No products in this category.</div>`;
+                    return;
+                }
+
+                grid.innerHTML = filtered.map((p, i) => `
+                    <a href="product.html?id=${p.id}" class="shop-card reveal" style="transition-delay: ${(i % 3) * 0.08}s;">
+                        <div class="shop-card-img">
+                            <img src="${p.image}" alt="${p.name}" loading="lazy">
+                            <div class="shop-card-quick add-to-cart-btn"
+                                data-id="${p.id}"
+                                data-name="${p.name}"
+                                data-price="${p.price}"
+                                data-img="${p.image}"
+                                onclick="event.preventDefault();">
+                                + Add to Basket
+                            </div>
+                        </div>
+                        <div class="shop-card-info">
+                            <span class="shop-card-label">${p.type === 'box' ? 'Ritual Box' : 'Individual'}</span>
+                            <div class="shop-card-title">${p.name}</div>
+                            <div class="shop-card-footer">
+                                <span class="shop-card-price">${formatPrice(p.price)}</span>
+                                <span class="shop-card-arrow">→</span>
+                            </div>
+                        </div>
+                    </a>
+                `).join('');
+
+                // Re-observe new reveal elements
+                grid.querySelectorAll('.reveal').forEach(el => {
+                    revealObs.observe(el);
+                });
+            }
+
+            // Intersection observer for staggered reveal
+            const revealObs = new IntersectionObserver((entries) => {
+                entries.forEach(e => {
+                    if (e.isIntersecting) { e.target.classList.add('active'); }
+                });
+            }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
+
+            // Filter pills
+            document.querySelectorAll('.filter-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+                    pill.classList.add('active');
+                    renderGrid(pill.dataset.filter);
+                });
+            });
+
+            // Initial render
+            document.addEventListener('DOMContentLoaded', () => renderGrid('all'));
+        })();
+    </script>
+</body>
+
+</html>

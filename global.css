@@ -1,0 +1,421 @@
+/* ============================================
+   RenewYou V11 — Ultra Minimalist Wellness
+   ============================================ */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500&display=swap');
+
+:root {
+    /* Earthy, Calming, Minimal Palette */
+    --clr-bg: #FAF9F6;
+    /* Off-white pearl */
+    --clr-surface: #FFFFFF;
+    --clr-surface-alt: #F0EFEA;
+    /* Soft sand */
+    --clr-border: #E5E3DC;
+
+    /* Accents - Olive/Sage */
+    --clr-accent: #6B705C;
+    --clr-accent-hover: #5A5E4D;
+
+    /* Text */
+    --clr-dark: #2B2B2B;
+    --clr-text: #5A5A5A;
+    --clr-text-light: #8C8C8C;
+
+    /* Typography */
+    --ff-display: 'Instrument Serif', Georgia, serif;
+    --ff-body: 'Outfit', -apple-system, sans-serif;
+
+    --fs-display: clamp(3rem, 7vw, 6.5rem);
+    --fs-h1: clamp(2.2rem, 5vw, 4rem);
+    --fs-h2: clamp(1.6rem, 3.5vw, 2.5rem);
+    --fs-h3: clamp(1.2rem, 2vw, 1.6rem);
+    --fs-body: 1.05rem;
+    --fs-sm: 0.9rem;
+    --fs-xs: 0.8rem;
+
+    /* Spacing */
+    --sp-xs: 0.5rem;
+    --sp-sm: 1rem;
+    --sp-md: 1.5rem;
+    --sp-lg: 2.5rem;
+    --sp-xl: 4rem;
+    --sp-2xl: 6rem;
+    --sp-3xl: 10rem;
+
+    /* Shape & Depth - Extremely flat and plain */
+    --radius-sm: 0px;
+    --radius: 0px;
+    --radius-lg: 0px;
+    --radius-pill: 0px;
+
+    /* Shadows - Almost non-existent for flatness */
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.02);
+    --shadow-hover: 0 10px 30px rgba(0, 0, 0, 0.04);
+
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+    --transition: all 0.4s var(--ease);
+}
+
+/* Reset */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+    background: var(--clr-bg);
+}
+
+body {
+    font-family: var(--ff-body);
+    font-weight: 300;
+    color: var(--clr-text);
+    background: var(--clr-bg);
+    line-height: 1.7;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--clr-bg);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--clr-border);
+}
+
+img,
+video {
+    max-width: 100%;
+    display: block;
+    object-fit: cover;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: var(--transition);
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    font-family: var(--ff-body);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: inherit;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+.display-txt {
+    font-family: var(--ff-display);
+    color: var(--clr-dark);
+    line-height: 1.15;
+    font-weight: 400;
+}
+
+p {
+    color: var(--clr-text);
+}
+
+/* Layout */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-xl);
+}
+
+@media(max-width: 768px) {
+    .container {
+        padding: 0 var(--sp-md);
+    }
+}
+
+.section {
+    padding: var(--sp-3xl) 0;
+}
+
+.section-label {
+    font-family: var(--ff-body);
+    font-size: var(--fs-xs);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    font-weight: 500;
+    color: var(--clr-text-light);
+    margin-bottom: var(--sp-lg);
+    display: block;
+}
+
+/* Reveal Animations */
+.reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Delay modifiers */
+.reveal.delay-1 {
+    transition-delay: 0.1s;
+}
+
+.reveal.delay-2 {
+    transition-delay: 0.2s;
+}
+
+.reveal.delay-3 {
+    transition-delay: 0.3s;
+}
+
+/* ===================
+   NAVBAR
+   =================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: var(--transition);
+    background: transparent;
+    padding: var(--sp-md) 0;
+}
+
+.navbar.scrolled {
+    background: rgba(250, 249, 246, 0.95);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--clr-border);
+    padding: var(--sp-sm) 0;
+}
+
+.nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 var(--sp-xl);
+}
+
+@media(max-width: 768px) {
+    .nav-inner {
+        padding: 0 var(--sp-md);
+    }
+}
+
+.nav-logo {
+    font-family: var(--ff-display);
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: var(--clr-dark);
+    letter-spacing: -0.02em;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-xl);
+}
+
+.nav-links a {
+    font-size: 0.85rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--clr-text);
+    transition: var(--transition);
+}
+
+.nav-links a:hover {
+    color: var(--clr-dark);
+}
+
+.nav-cart {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    color: var(--clr-dark);
+}
+
+.cart-badge {
+    background: var(--clr-dark);
+    color: #FFF;
+    font-size: 0.7rem;
+    height: 18px;
+    min-width: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: 400;
+    padding: 0 4px;
+}
+
+.cart-badge:empty,
+.cart-badge[data-count="0"] {
+    display: none;
+}
+
+/* ===================
+   BUTTONS (Ultra Minimal)
+   =================== */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem 2.5rem;
+    font-size: 0.85rem;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    border-radius: 0;
+    transition: var(--transition);
+    cursor: pointer;
+}
+
+.btn-fill {
+    background: var(--clr-accent);
+    color: #fff;
+    border: 1px solid var(--clr-accent);
+}
+
+.btn-fill:hover {
+    background: var(--clr-dark);
+    border-color: var(--clr-dark);
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--clr-dark);
+    border: 1px solid var(--clr-dark);
+}
+
+.btn-outline:hover {
+    background: var(--clr-dark);
+    color: #fff;
+}
+
+.btn-accent {
+    background: var(--clr-dark);
+    color: #fff;
+    border: 1px solid var(--clr-dark);
+}
+
+.btn-accent:hover {
+    background: var(--clr-accent);
+    border-color: var(--clr-accent);
+}
+
+.btn-block {
+    width: 100%;
+}
+
+.btn-lg {
+    padding: 1.2rem 3rem;
+    font-size: 0.9rem;
+}
+
+/* Toast Notification */
+#ryToast {
+    border-radius: 0 !important;
+    border: 1px solid var(--clr-border) !important;
+    background: var(--clr-dark) !important;
+    color: #fff !important;
+    font-weight: 400 !important;
+    padding: 1rem 2rem !important;
+    box-shadow: var(--shadow-hover) !important;
+}
+
+/* ===================
+   FOOTER
+   =================== */
+.footer {
+    padding: var(--sp-2xl) 0 var(--sp-lg);
+    background: var(--clr-bg);
+    border-top: 1px solid var(--clr-border);
+}
+
+.footer-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.footer .nav-logo {
+    color: var(--clr-dark);
+    font-size: 2.5rem;
+    margin-bottom: var(--sp-md);
+}
+
+/* ===================
+   MARQUEE
+   =================== */
+.marquee-wrapper {
+    overflow: hidden;
+    white-space: nowrap;
+    padding: var(--sp-md) 0;
+    display: flex;
+    background: var(--clr-surface-alt);
+    color: var(--clr-dark);
+    border-top: 1px solid var(--clr-border);
+    border-bottom: 1px solid var(--clr-border);
+}
+
+.marquee-content {
+    display: inline-flex;
+    animation: marquee 35s linear infinite;
+    gap: var(--sp-xl);
+    font-family: var(--ff-body);
+    font-size: 0.8rem;
+    font-weight: 400;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+}
+
+.marquee-content span::after {
+    content: '—';
+    margin-left: var(--sp-xl);
+    color: var(--clr-text-light);
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+@media(max-width:768px) {
+    .nav-links.desktop-only {
+        display: none;
+    }
+}

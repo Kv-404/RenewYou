@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RenewYou — Cultivating Calm</title>
+  <link rel="stylesheet" href="global.css">
+  <style>
+    /* Minimal Hero */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--sp-2xl) var(--sp-lg);
+      background: var(--clr-bg);
+      text-align: center;
+      padding-top: 15vh;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-title {
+      font-size: var(--fs-display);
+      margin-bottom: var(--sp-md);
+      color: var(--clr-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .hero-subtitle {
+      font-size: 1.25rem;
+      color: var(--clr-text);
+      margin-bottom: var(--sp-xl);
+      max-width: 600px;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .manifesto {
+      padding: var(--sp-3xl) 0;
+      text-align: center;
+      background: var(--clr-surface-alt);
+    }
+
+    .manifesto-inner {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .manifesto-text {
+      font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+      line-height: 1.4;
+      color: var(--clr-dark);
+      font-family: var(--ff-display);
+    }
+
+    .featured-gallery {
+      padding: var(--sp-3xl) 0;
+      background: var(--clr-bg);
+    }
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--sp-3xl);
+      align-items: center;
+      margin-bottom: var(--sp-3xl);
+    }
+
+    .gallery-img-wrapper {
+      position: relative;
+      overflow: hidden;
+      background: var(--clr-border);
+    }
+
+    .gallery-img-wrapper img {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      transition: transform 2s var(--ease);
+    }
+
+    .gallery-img-wrapper:hover img {
+      transform: scale(1.03);
+    }
+
+    .gallery-txt {
+      padding: var(--sp-lg) 0;
+      max-width: 450px;
+    }
+
+    .gallery-grid.reversed {
+      direction: rtl;
+    }
+
+    .gallery-grid.reversed>* {
+      direction: ltr;
+    }
+
+    .cta-section {
+      padding: var(--sp-3xl) var(--sp-md);
+      text-align: center;
+      background: var(--clr-surface);
+      border-top: 1px solid var(--clr-border);
+      border-bottom: 1px solid var(--clr-border);
+    }
+
+    .cta-inner {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    @media(max-width:992px) {
+      .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: var(--sp-xl);
+      }
+
+      .gallery-grid.reversed {
+        direction: ltr;
+      }
+
+      .gallery-txt {
+        text-align: center;
+        margin: 0 auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">RenewYou.</a>
+      <div class="nav-links desktop-only">
+        <a href="shop.html">The Collection</a>
+        <a href="quiz.html">Diagnostic Form</a>
+      </div>
+      <a href="cart.html" class="nav-cart">
+        <span style="font-size:var(--fs-sm); font-weight:500;">Basket</span>
+        <span class="cart-badge" id="cartBadge"></span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-content">
+      <span class="section-label reveal">Simplicity and Calm</span>
+      <h1 class="hero-title reveal delay-1">Wellness, distilled.</h1>
+      <p class="hero-subtitle reveal delay-2">A curated selection of psychological tools and minimal, calming
+        subscription services to anchor your mind.</p>
+      <div style="display:flex; gap:var(--sp-sm); justify-content:center; flex-wrap:wrap;" class="reveal delay-3">
+        <a href="shop.html" class="btn btn-accent">Shop Collection</a>
+        <a href="quiz.html" class="btn btn-outline">Find Your Ritual</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrapper">
+    <div class="marquee-content">
+      <span>Mental Health First</span>
+      <span>Monthly Subscriptions</span>
+      <span>Therapist Approved Tools</span>
+      <span>Premium Wellness</span>
+      <span>Mental Health First</span>
+      <span>Monthly Subscriptions</span>
+      <span>Therapist Approved Tools</span>
+      <span>Premium Wellness</span>
+    </div>
+  </div>
+
+  <!-- MANIFESTO -->
+  <section class="manifesto reveal">
+    <div class="container manifesto-inner reveal delay-1">
+      <span class="section-label">Our Philosophy</span>
+      <h2 class="manifesto-text">
+        Consistent care shouldn't be complicated. We offer standalone restorative tools and customized wellness
+        subscription services designed to anchor your nervous system in absolute simplicity.
+      </h2>
+    </div>
+  </section>
+
+  <!-- FEATURED GALLERY -->
+  <section class="featured-gallery">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:var(--sp-2xl);" class="reveal">
+        <span class="section-label">Essential Objects</span>
+        <h2 style="font-size:var(--fs-h2);">Curated for quiet living.</h2>
+      </div>
+
+      <div style="display:flex; flex-direction:column;">
+
+        <div class="gallery-grid">
+          <div class="gallery-img-wrapper reveal">
+            <img src="assets/journal.png" alt="Guided Mindfulness Journal">
+          </div>
+          <div class="gallery-txt reveal delay-1">
+            <span class="section-label">Daily Anchor</span>
+            <h3 style="font-size:var(--fs-h2); margin-bottom:var(--sp-sm);">Guided Mindfulness Journal</h3>
+            <p style="margin-bottom:var(--sp-lg);">Linen-bound. Crafted with archival grade paper and daily
+              therapist-designed prompts to gently untangle your thoughts.</p>
+            <a href="product.html?id=journal" class="btn btn-outline">Examine</a>
+          </div>
+        </div>
+
+        <div class="gallery-grid reversed">
+          <div class="gallery-img-wrapper reveal">
+            <img src="assets/calm_box.png" alt="The Calm Box">
+          </div>
+          <div class="gallery-txt reveal delay-1">
+            <span class="section-label">Monthly Ritual</span>
+            <h3 style="font-size:var(--fs-h2); margin-bottom:var(--sp-sm);">The Calm Protocol Box</h3>
+            <p style="margin-bottom:var(--sp-lg);">A comprehensive system for anxiety disruption featuring French
+              lavender, chamomile tea, and sensory grounding tools delivered monthly.</p>
+            <a href="product.html?id=calm-box" class="btn btn-accent">Subscribe</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section reveal">
+    <div class="container cta-inner reveal delay-1">
+      <h2 style="font-size:var(--fs-h2); margin-bottom:var(--sp-sm);">Seeking direction?</h2>
+      <p style="margin:0 auto var(--sp-lg);">Take our brief diagnostic assessment to get matched with a delicate,
+        customized monthly subscription tailored to your specific nervous system.</p>
+      <a href="quiz.html" class="btn btn-accent">Begin Diagnostic</a>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-inner container">
+      <div class="nav-logo">RenewYou.</div>
+      <div style="display:flex; gap:var(--sp-lg); margin:var(--sp-lg) 0; font-family:var(--ff-body); font-weight:500;">
+        <a href="shop.html">The Collection</a>
+        <a href="quiz.html">Diagnostic</a>
+        <a href="cart.html">Basket</a>
+      </div>
+      <p style="font-size:var(--fs-xs); color:var(--clr-text-light);">© 2026 RenewYou Wellness.</p>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout — RenewYou</title>
+    <link rel="stylesheet" href="global.css">
+    <style>
+        .checkout-page {
+            background: var(--clr-bg);
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .checkout-form-col {
+            padding: 12vh 6vw var(--sp-xl) 8vw;
+        }
+
+        .checkout-summary-col {
+            padding: 12vh 8vw var(--sp-xl) 6vw;
+            background: var(--clr-surface);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+            border-left: 1px solid var(--clr-border);
+        }
+
+        .form-section-title {
+            font-size: var(--fs-h2);
+            margin: var(--sp-2xl) 0 var(--sp-lg);
+            font-weight: 400;
+        }
+
+        .form-section-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .form-group {
+            margin-bottom: var(--sp-md);
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: var(--fs-sm);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--clr-text);
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            width: 100%;
+            padding: 1rem 1.2rem;
+            border: 1px solid var(--clr-border);
+            background: #fff;
+            font-family: var(--ff-body);
+            font-size: 1rem;
+            transition: var(--transition);
+            color: var(--clr-dark);
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-color: var(--clr-dark);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--sp-md);
+        }
+
+        /* ---- Subscription Block ---- */
+        .subscription-block {
+            margin-top: var(--sp-xl);
+            border: 1px solid var(--clr-border);
+        }
+
+        .sub-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            background: var(--clr-surface-alt);
+            user-select: none;
+        }
+
+        .sub-header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .sub-toggle-checkbox {
+            appearance: none;
+            width: 44px;
+            height: 24px;
+            background: var(--clr-border);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+        }
+
+        .sub-toggle-checkbox::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: left 0.3s;
+        }
+
+        .sub-toggle-checkbox:checked {
+            background: var(--clr-accent);
+        }
+
+        .sub-toggle-checkbox:checked::after {
+            left: 23px;
+        }
+
+        .sub-header-label {
+            font-weight: 500;
+            color: var(--clr-dark);
+            font-size: 1rem;
+        }
+
+        .sub-header-badge {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.7rem;
+            background: var(--clr-accent);
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .sub-body {
+            display: none;
+            padding: 1.5rem;
+            border-top: 1px solid var(--clr-border);
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .sub-body.open {
+            display: flex;
+        }
+
+        /* Frequency selector */
+        .freq-toggle {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            border: 1px solid var(--clr-border);
+        }
+
+        .freq-option {
+            display: none;
+        }
+
+        .freq-label {
+            padding: 0.9rem;
+            text-align: center;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            border-right: 1px solid var(--clr-border);
+            color: var(--clr-text);
+            transition: var(--transition);
+        }
+
+        .freq-label:last-of-type {
+            border-right: none;
+        }
+
+        .freq-option:checked+.freq-label {
+            background: var(--clr-dark);
+            color: #fff;
+        }
+
+        .sub-perks {
+            background: var(--clr-surface-alt);
+            padding: 1rem 1.2rem;
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--clr-text);
+            border: 1px solid var(--clr-border);
+        }
+
+        .sub-perks li::before {
+            content: '✓  ';
+            color: var(--clr-accent);
+            font-weight: 600;
+        }
+
+        /* ---- Gift Box Block ---- */
+        .gift-block {
+            margin-top: var(--sp-md);
+            border: 1px solid var(--clr-border);
+        }
+
+        .gift-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.2rem 1.5rem;
+            cursor: pointer;
+            background: var(--clr-surface-alt);
+            user-select: none;
+        }
+
+        .gift-label {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--clr-dark);
+        }
+
+        .gift-sub {
+            font-size: 0.85rem;
+            color: var(--clr-text-light);
+            margin-top: 0.2rem;
+        }
+
+        .gift-toggle-checkbox {
+            appearance: none;
+            width: 44px;
+            height: 24px;
+            background: var(--clr-border);
+            border-radius: 12px;
+            cursor: pointer;
+            position: relative;
+            transition: background 0.3s;
+            flex-shrink: 0;
+        }
+
+        .gift-toggle-checkbox::after {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            border-radius: 50%;
+            top: 3px;
+            left: 3px;
+            transition: left 0.3s;
+        }
+
+        .gift-toggle-checkbox:checked {
+            background: var(--clr-dark);
+        }
+
+        .gift-toggle-checkbox:checked::after {
+            left: 23px;
+        }
+
+        .gift-body {
+            display: none;
+            padding: 1.5rem;
+            border-top: 1px solid var(--clr-border);
+            flex-direction: column;
+            gap: var(--sp-md);
+        }
+
+        .gift-body.open {
+            display: flex;
+        }
+
+        /* Savings line */
+        .savings-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 1rem;
+            background: #f5f5f0;
+            border: 1px solid var(--clr-border);
+            font-size: 0.85rem;
+            color: var(--clr-accent);
+            margin-bottom: var(--sp-md);
+        }
+
+        .savings-line strong {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--clr-dark);
+        }
+
+        /* Checkbox Override */
+        input[type="checkbox"]:not(.sub-toggle-checkbox):not(.gift-toggle-checkbox) {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--clr-border);
+            background: #fff;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        input[type="checkbox"]:not(.sub-toggle-checkbox):not(.gift-toggle-checkbox):checked {
+            background: var(--clr-accent);
+            border-color: var(--clr-accent);
+        }
+
+        input[type="checkbox"]:not(.sub-toggle-checkbox):not(.gift-toggle-checkbox):checked::after {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 2px;
+            width: 5px;
+            height: 9px;
+            border: solid white;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+
+        /* Success Overlay */
+        .success-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--clr-bg);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            flex-direction: column;
+            padding: var(--sp-xl);
+        }
+
+        .success-icon {
+            font-size: 4rem;
+            margin-bottom: var(--sp-lg);
+        }
+
+        @media(max-width:992px) {
+            .checkout-page {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-summary-col {
+                order: -1;
+                border-left: none;
+                border-bottom: 1px solid var(--clr-border);
+                height: auto;
+                position: static;
+                padding: var(--sp-xl) var(--sp-lg);
+            }
+
+            .checkout-form-col {
+                padding: var(--sp-2xl) var(--sp-lg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar scrolled">
+        <div class="nav-inner" style="justify-content:center;">
+            <a href="index.html" class="nav-logo">RenewYou. <span
+                    style="font-family:var(--ff-body); font-size:0.9rem; font-weight:300; opacity:0.5; margin-left:1rem; letter-spacing:0.05em;">Secure
+                    Checkout</span></a>
+        </div>
+    </nav>
+
+    <div class="checkout-page">
+        <!-- LEFT: Form -->
+        <div class="checkout-form-col">
+            <form id="checkoutForm">
+
+                <h3 class="form-section-title">Contact</h3>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder="you@example.com">
+                </div>
+
+                <h3 class="form-section-title">Shipping Address</h3>
+                <div class="form-row">
+                    <div class="form-group"><label>First Name</label><input type="text" id="firstName" required></div>
+                    <div class="form-group"><label>Last Name</label><input type="text" id="lastName" required></div>
+                </div>
+                <div class="form-group"><label>Address</label><input type="text" id="address" required></div>
+                <div class="form-row">
+                    <div class="form-group"><label>City</label><input type="text" id="city" required></div>
+                    <div class="form-group"><label>Postal Code</label><input type="text" id="pinCode" required></div>
+                </div>
+
+                <h3 class="form-section-title">Payment</h3>
+                <div class="form-group"><label>Name on Card</label><input type="text" id="cardName" required></div>
+                <div class="form-group"><label>Card Number</label><input type="text" id="cardNumber"
+                        placeholder="0000 0000 0000 0000" maxlength="19" required></div>
+                <div class="form-row">
+                    <div class="form-group"><label>Expiry</label><input type="text" id="expiry" placeholder="MM/YY"
+                            maxlength="5" required></div>
+                    <div class="form-group"><label>CVV</label><input type="password" id="cvv" maxlength="3" required>
+                    </div>
+                </div>
+
+                <!-- SUBSCRIPTION BLOCK -->
+                <div class="subscription-block" style="margin-top:var(--sp-2xl);">
+                    <div class="sub-header" id="subHeader">
+                        <div class="sub-header-left">
+                            <input type="checkbox" class="sub-toggle-checkbox" id="subscribeToggle">
+                            <div>
+                                <div class="sub-header-label">Subscribe &amp; Save</div>
+                                <div style="font-size:0.8rem; color:var(--clr-text-light); margin-top:2px;">Monthly or
+                                    Quarterly delivery — cancel anytime</div>
+                            </div>
+                        </div>
+                        <span class="sub-header-badge" id="subBadge">Save up to 25%</span>
+                    </div>
+
+                    <div class="sub-body" id="subBody">
+                        <!-- Frequency Toggle -->
+                        <div>
+                            <div
+                                style="font-size:0.8rem; text-transform:uppercase; letter-spacing:0.1em; color:var(--clr-text-light); margin-bottom:0.75rem;">
+                                Delivery Frequency</div>
+                            <div class="freq-toggle">
+                                <input type="radio" name="freq" id="freqMonthly" class="freq-option" value="monthly"
+                                    checked>
+                                <label class="freq-label" for="freqMonthly">Monthly<br><span
+                                        style="font-size:0.7rem; opacity:0.7;">Save 15%</span></label>
+
+                                <input type="radio" name="freq" id="freqQuarterly" class="freq-option"
+                                    value="quarterly">
+                                <label class="freq-label" for="freqQuarterly">Quarterly<br><span
+                                        style="font-size:0.7rem; opacity:0.7;">Save 20%</span></label>
+
+                                <input type="radio" name="freq" id="freqPrepay" class="freq-option" value="prepay6">
+                                <label class="freq-label" for="freqPrepay">Prepay 6mo<br><span
+                                        style="font-size:0.7rem; opacity:0.7;">Save 25%</span></label>
+                            </div>
+                        </div>
+
+                        <!-- Savings preview -->
+                        <div class="savings-line" id="savingsLine">
+                            <span>Subscription discount applied</span>
+                            <strong id="savingsAmount">—</strong>
+                        </div>
+
+                        <!-- Perks -->
+                        <div class="sub-perks">
+                            <ul>
+                                <li>Expert-curated box contents each cycle</li>
+                                <li>Access to RenewYou Community Forum</li>
+                                <li>Digital Companion App (iOS &amp; Android)</li>
+                                <li>Priority shipping &amp; early access drops</li>
+                                <li>Pause or cancel anytime, no questions asked</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- GIFT BOX BLOCK -->
+                <div class="gift-block">
+                    <div class="gift-header" id="giftHeader">
+                        <input type="checkbox" class="gift-toggle-checkbox" id="giftToggle">
+                        <div style="flex:1;">
+                            <div class="gift-label">🎁 Gift a Box</div>
+                            <div class="gift-sub">Send this order directly to a recipient</div>
+                        </div>
+                    </div>
+                    <div class="gift-body" id="giftBody">
+                        <div class="form-group"><label>Recipient Name</label><input type="text" id="giftName"
+                                placeholder="Who is this for?"></div>
+                        <div class="form-group"><label>Recipient Email <span style="opacity:0.5;">(for digital
+                                    items)</span></label><input type="email" id="giftEmail"
+                                placeholder="recipient@email.com"></div>
+                        <div class="form-group">
+                            <label>Gift Message <span style="opacity:0.5;">(optional)</span></label>
+                            <textarea id="giftMessage" rows="3"
+                                style="width:100%; padding:1rem; border:1px solid var(--clr-border); font-family:var(--ff-body); font-size:0.95rem; background:#fff; color:var(--clr-dark); resize:vertical; outline:none;"
+                                placeholder="Write something heartfelt..."></textarea>
+                        </div>
+                        <div
+                            style="display:flex; align-items:center; gap:0.8rem; padding:1rem; background:var(--clr-surface-alt); font-size:0.85rem; color:var(--clr-text);">
+                            <input type="checkbox" id="giftWrap">
+                            <label for="giftWrap" style="cursor:pointer;">Add premium gift wrap + handwritten card
+                                (+₹299)</label>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-accent btn-block btn-lg"
+                    style="margin-top:var(--sp-2xl); font-size:1rem; padding:1.3rem;">
+                    Complete Purchase &nbsp;<span id="checkoutBtnAmount" style="opacity:0.7;">₹0</span>
+                </button>
+
+                <p style="text-align:center; font-size:0.8rem; color:var(--clr-text-light); margin-top:var(--sp-md);">
+                    🔒 256-bit SSL encrypted. Your data is never stored.
+                </p>
+            </form>
+        </div>
+
+        <!-- RIGHT: Summary -->
+        <div class="checkout-summary-col">
+            <h3
+                style="font-size:1.8rem; font-family:var(--ff-display); font-weight:400; margin-bottom:var(--sp-xl); border-bottom:1px solid var(--clr-border); padding-bottom:var(--sp-md);">
+                Order Summary</h3>
+
+            <div id="checkoutItemsList" style="margin-bottom:var(--sp-xl);"></div>
+
+            <div
+                style="display:flex; justify-content:space-between; font-size:0.9rem; margin-bottom:0.8rem; color:var(--clr-text-light);">
+                <span>Shipping</span><span>Complimentary</span>
+            </div>
+            <div id="discountRow"
+                style="display:none; justify-content:space-between; font-size:0.9rem; margin-bottom:0.8rem; color:var(--clr-accent);">
+                <span id="discountLabel">Subscription Discount</span><span id="discountValue"></span>
+            </div>
+            <div id="giftWrapRow"
+                style="display:none; justify-content:space-between; font-size:0.9rem; margin-bottom:0.8rem; color:var(--clr-text-light);">
+                <span>Gift Wrap</span><span>+₹299</span>
+            </div>
+            <div
+                style="display:flex; justify-content:space-between; align-items:baseline; border-top:1px solid var(--clr-border); padding-top:1.5rem; margin-top:1rem;">
+                <span style="font-size:1rem; text-transform:uppercase; letter-spacing:0.08em;">Total</span>
+                <span id="checkoutTotal"
+                    style="font-family:var(--ff-display); font-size:3rem; color:var(--clr-dark); line-height:1;">₹0</span>
+            </div>
+
+            <!-- Subscription summary card -->
+            <div id="subSummaryCard"
+                style="display:none; margin-top:var(--sp-xl); padding:1.2rem; border:1px solid var(--clr-border); background:var(--clr-surface-alt); font-size:0.85rem; line-height:1.7;">
+                <div style="font-weight:500; color:var(--clr-dark); margin-bottom:0.5rem;">Subscription Active</div>
+                <div id="subSummaryText" style="color:var(--clr-text);"></div>
+            </div>
+
+            <!-- Gift summary -->
+            <div id="giftSummaryCard"
+                style="display:none; margin-top:var(--sp-md); padding:1.2rem; border:1px solid var(--clr-border); background:#fefefe; font-size:0.85rem; line-height:1.7; color:var(--clr-text);">
+                <div style="font-weight:500; color:var(--clr-dark); margin-bottom:0.5rem;">🎁 Gift Order</div>
+                <div id="giftSummaryText"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Overlay -->
+    <div class="success-overlay" id="successOverlay">
+        <div class="success-icon">✦</div>
+        <h2 style="font-size:clamp(2.5rem, 6vw, 4rem); margin-bottom:var(--sp-sm);">Your journey begins.</h2>
+        <p style="font-size:1.1rem; color:var(--clr-text); margin-bottom:var(--sp-2xl); max-width:450px;"
+            id="successMessage">Your restorative tools are being prepared.</p>
+        <a href="index.html" class="btn btn-outline" style="min-width:200px;">Return Home</a>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        (function () {
+            const CART_KEY = 'ryCart_v7';
+            function getCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
+            function formatPrice(n) { return '₹' + n.toLocaleString('en-IN'); }
+
+            const DISCOUNT = { monthly: 0.15, quarterly: 0.20, prepay6: 0.25 };
+            const FREQ_LABEL = { monthly: 'Monthly delivery (-15%)', quarterly: 'Quarterly delivery (-20%)', prepay6: 'Prepaid 6 months (-25%)' };
+
+            let baseTotal = 0;
+            let isSubscribed = false;
+            let currentFreq = 'monthly';
+            let isGift = false;
+            let hasGiftWrap = false;
+
+            /* ---- Render order summary ---- */
+            function renderSummary() {
+                const cart = getCart();
+                baseTotal = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+
+                let html = '';
+                cart.forEach(item => {
+                    html += `<div style="display:flex;justify-content:space-between;padding:0.9rem 0;border-bottom:1px solid var(--clr-border);font-size:0.9rem;">
+                        <div><span style="font-weight:500;">${item.name}</span><br><span style="opacity:0.6;">× ${item.qty}</span></div>
+                        <div>${formatPrice(item.price * item.qty)}</div>
+                    </div>`;
+                });
+                document.getElementById('checkoutItemsList').innerHTML = html;
+                updateTotals();
+            }
+
+            function updateTotals() {
+                let total = baseTotal;
+                let discount = 0;
+                const giftWrapAmount = hasGiftWrap ? 299 : 0;
+
+                if (isSubscribed) {
+                    discount = Math.round(baseTotal * DISCOUNT[currentFreq]);
+                    total = baseTotal - discount + giftWrapAmount;
+                } else {
+                    total = baseTotal + giftWrapAmount;
+                }
+
+                document.getElementById('checkoutTotal').textContent = formatPrice(total);
+                document.getElementById('checkoutBtnAmount').textContent = formatPrice(total);
+
+                // Discount row
+                const discRow = document.getElementById('discountRow');
+                if (isSubscribed && discount > 0) {
+                    discRow.style.display = 'flex';
+                    document.getElementById('discountLabel').textContent = FREQ_LABEL[currentFreq];
+                    document.getElementById('discountValue').textContent = '-' + formatPrice(discount);
+                } else {
+                    discRow.style.display = 'none';
+                }
+
+                // Gift wrap row
+                document.getElementById('giftWrapRow').style.display = hasGiftWrap ? 'flex' : 'none';
+
+                // Subscription summary card
+                const subCard = document.getElementById('subSummaryCard');
+                if (isSubscribed) {
+                    subCard.style.display = 'block';
+                    document.getElementById('subSummaryText').innerHTML =
+                        `${FREQ_LABEL[currentFreq]}<br>Includes: Community Forum + Digital App Access`;
+                } else {
+                    subCard.style.display = 'none';
+                }
+
+                // Savings badge
+                document.getElementById('savingsAmount').textContent =
+                    isSubscribed ? `-${formatPrice(discount)} saved` : '—';
+            }
+
+            /* ---- Subscription toggle ---- */
+            const subscribeToggle = document.getElementById('subscribeToggle');
+            const subBody = document.getElementById('subBody');
+
+            subscribeToggle.addEventListener('change', function () {
+                isSubscribed = this.checked;
+                subBody.classList.toggle('open', isSubscribed);
+                updateTotals();
+            });
+
+            // Click on header row also toggles
+            document.getElementById('subHeader').addEventListener('click', function (e) {
+                if (e.target === subscribeToggle) return;
+                subscribeToggle.checked = !subscribeToggle.checked;
+                subscribeToggle.dispatchEvent(new Event('change'));
+            });
+
+            /* ---- Frequency change ---- */
+            document.querySelectorAll('.freq-option').forEach(radio => {
+                radio.addEventListener('change', function () {
+                    currentFreq = this.value;
+                    updateTotals();
+                });
+            });
+
+            /* ---- Gift toggle ---- */
+            const giftToggle = document.getElementById('giftToggle');
+            const giftBody = document.getElementById('giftBody');
+
+            giftToggle.addEventListener('change', function () {
+                isGift = this.checked;
+                giftBody.classList.toggle('open', isGift);
+                updateGiftSummary();
+                updateTotals();
+            });
+
+            document.getElementById('giftHeader').addEventListener('click', function (e) {
+                if (e.target === giftToggle) return;
+                giftToggle.checked = !giftToggle.checked;
+                giftToggle.dispatchEvent(new Event('change'));
+            });
+
+            /* ---- Gift wrap ---- */
+            document.getElementById('giftWrap').addEventListener('change', function () {
+                hasGiftWrap = this.checked;
+                updateTotals();
+            });
+
+            function updateGiftSummary() {
+                const card = document.getElementById('giftSummaryCard');
+                const name = document.getElementById('giftName').value;
+                if (isGift) {
+                    card.style.display = 'block';
+                    document.getElementById('giftSummaryText').textContent =
+                        name ? `Sending to: ${name}` : 'Recipient details below';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+
+            document.getElementById('giftName').addEventListener('input', updateGiftSummary);
+
+            /* ---- Form submit ---- */
+            document.getElementById('checkoutForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+                const btn = this.querySelector('button[type="submit"]');
+                btn.innerHTML = 'Processing…';
+                btn.style.pointerEvents = 'none';
+
+                setTimeout(() => {
+                    const gifted = isGift && document.getElementById('giftName').value;
+                    document.getElementById('successMessage').textContent =
+                        gifted
+                            ? `Your gift for ${document.getElementById('giftName').value} is being prepared with care.`
+                            : 'Your restorative tools are being prepared.';
+
+                    document.getElementById('successOverlay').style.display = 'flex';
+                    localStorage.removeItem(CART_KEY);
+
+                    // Update badge
+                    document.querySelectorAll('#cartBadge').forEach(b => { b.textContent = ''; b.style.display = 'none'; });
+                }, 1500);
+            });
+
+            /* ---- Card number formatter ---- */
+            document.getElementById('cardNumber').addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').replace(/(.{4})/g, '$1 ').trim().slice(0, 19);
+            });
+            document.getElementById('expiry').addEventListener('input', function () {
+                this.value = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '$1/$2').slice(0, 5);
+            });
+
+            renderSummary();
+        })();
+    </script>
+</body>
+
+</html>
