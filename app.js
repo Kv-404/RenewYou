@@ -203,10 +203,9 @@
       const count = getCartCount();
       b.textContent = count > 0 ? count : '';
       b.setAttribute('data-count', count);
-      b.style.display = count > 0 ? 'inline-block' : 'none';
+      b.style.display = count > 0 ? 'flex' : 'none';
       if (count > 0) {
         b.style.padding = '2px 6px';
-        b.style.position = 'absolute';
       }
     });
   }
