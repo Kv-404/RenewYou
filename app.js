@@ -107,7 +107,7 @@
       type: 'item',
       name: 'Deep Pressure Blanket',
       price: 12900,
-      image: 'assets/calm_box.png', /* Placeholder reused */
+      image: 'assets/weighted_blanket.png',
       desc: '15lb weighted blanket engineered for deep nervous system relaxation. Simulates therapeutic deep touch pressure.',
       details: ['Organic Cotton', 'Glass Microbeads', 'Machine Washable']
     },
@@ -116,7 +116,7 @@
       type: 'item',
       name: 'SAD Light Therapy Lamp',
       price: 4500,
-      image: 'assets/journal.png', /* Placeholder */
+      image: 'assets/therapy_lamp.png',
       desc: '10,000 Lux full-spectrum UV-free therapy light. Realigns your circadian rhythm and boosts mood.',
       details: ['10,000 Lux', 'UV-Free', 'Adjustable Brightness']
     },
@@ -125,7 +125,7 @@
       type: 'item',
       name: 'White Noise Machine',
       price: 3500,
-      image: 'assets/grounding_box.png', /* Placeholder */
+      image: 'assets/sound_machine.png',
       desc: 'Non-looping acoustic fan and electronic white noise. Masks environmental disruption for unbroken sleep.',
       details: ['20 Sound Profiles', 'Warm Night Light', 'Timer Function']
     },
@@ -134,7 +134,7 @@
       type: 'item',
       name: 'Zafu Meditation Cushion',
       price: 5900,
-      image: 'assets/rest_box.png', /* Placeholder */
+      image: 'assets/meditation_cushion.png',
       desc: 'Ergonomic buckwheat hull cushion. Elevates the hips to align the spine for prolonged, pain-free meditation.',
       details: ['Buckwheat Fill', 'Removable Linen Cover', 'Handcrafted']
     }
