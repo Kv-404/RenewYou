@@ -326,6 +326,71 @@
             transform: rotate(45deg);
         }
 
+        /* ---- Payment Options ---- */
+        .payment-method {
+            border: 1px solid var(--clr-border);
+            margin-bottom: var(--sp-sm);
+            background: #fff;
+        }
+
+        .payment-header {
+            padding: 1.2rem;
+            background: var(--clr-surface-alt);
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            cursor: pointer;
+            width: 100%;
+            margin: 0;
+            user-select: none;
+        }
+
+        .payment-header span {
+            font-size: 1rem;
+            font-weight: 500;
+            color: var(--clr-dark);
+        }
+
+        .payment-body {
+            display: none;
+            padding: 1.5rem;
+            border-top: 1px solid var(--clr-border);
+            background: #fff;
+        }
+
+        .payment-body.open {
+            display: block;
+        }
+
+        .payment-radio {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid var(--clr-border);
+            border-radius: 50%;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+            background: #fff;
+            flex-shrink: 0;
+            margin: 0;
+        }
+
+        .payment-radio:checked {
+            border-color: var(--clr-accent);
+        }
+
+        .payment-radio:checked::after {
+            content: '';
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--clr-accent);
+        }
+
         /* Success Overlay */
         .success-overlay {
             position: fixed;
@@ -398,13 +463,53 @@
                 </div>
 
                 <h3 class="form-section-title">Payment</h3>
-                <div class="form-group"><label>Name on Card</label><input type="text" id="cardName" required></div>
-                <div class="form-group"><label>Card Number</label><input type="text" id="cardNumber"
-                        placeholder="0000 0000 0000 0000" maxlength="19" required></div>
-                <div class="form-row">
-                    <div class="form-group"><label>Expiry</label><input type="text" id="expiry" placeholder="MM/YY"
-                            maxlength="5" required></div>
-                    <div class="form-group"><label>CVV</label><input type="password" id="cvv" maxlength="3" required>
+
+                <div class="payment-method">
+                    <label class="payment-header" for="payCard">
+                        <input type="radio" name="paymentType" id="payCard" class="payment-radio" value="card" checked>
+                        <span>Credit / Debit Card</span>
+                    </label>
+                    <div class="payment-body open" id="paymentBodyCard">
+                        <div class="form-group"><label>Name on Card</label><input type="text" id="cardName" required>
+                        </div>
+                        <div class="form-group"><label>Card Number</label><input type="text" id="cardNumber"
+                                placeholder="0000 0000 0000 0000" maxlength="19" required></div>
+                        <div class="form-row">
+                            <div class="form-group"><label>Expiry</label><input type="text" id="expiry"
+                                    placeholder="MM/YY" maxlength="5" required></div>
+                            <div class="form-group"><label>CVV</label><input type="password" id="cvv" maxlength="3"
+                                    required></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-method">
+                    <label class="payment-header" for="payUPI">
+                        <input type="radio" name="paymentType" id="payUPI" class="payment-radio" value="upi">
+                        <span>UPI (QR Code)</span>
+                    </label>
+                    <div class="payment-body" id="paymentBodyUPI" style="text-align: center;">
+                        <p style="font-size: 0.9rem; margin-bottom: 1rem; color: var(--clr-text);">Scan the QR code
+                            below with any UPI app to complete the payment.</p>
+                        <div
+                            style="padding: 1rem; border: 1px solid var(--clr-border); display: inline-block; background: #fff; border-radius: 8px;">
+                            <img src="assets/QR.jpeg" id="upiQRImage" alt="UPI QR Code" style="width: 200px; height: 200px; object-fit: contain;">
+                        </div>
+                        <div class="form-group" style="text-align: left; margin-top: 1.5rem;">
+                            <label>UPI Transaction Reference Number</label>
+                            <input type="text" id="upiRef" placeholder="e.g. 123456789012">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="payment-method">
+                    <label class="payment-header" for="payCOD">
+                        <input type="radio" name="paymentType" id="payCOD" class="payment-radio" value="cod">
+                        <span>Cash on Delivery (COD)</span>
+                    </label>
+                    <div class="payment-body" id="paymentBodyCOD">
+                        <p style="font-size: 0.9rem; color: var(--clr-text);">Pay with cash or UPI when your order is
+                            delivered. Please keep exact change ready if paying by cash.</p>
                     </div>
                 </div>
 
@@ -723,6 +828,39 @@
             document.getElementById('expiry').addEventListener('input', function () {
                 this.value = this.value.replace(/\D/g, '').replace(/^(\d{2})(\d)/, '$1/$2').slice(0, 5);
             });
+
+            /* ---- Payment Options Toggle ---- */
+            const paymentRadios = document.querySelectorAll('input[name="paymentType"]');
+            paymentRadios.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    document.getElementById('paymentBodyCard').classList.remove('open');
+                    document.getElementById('paymentBodyUPI').classList.remove('open');
+                    document.getElementById('paymentBodyCOD').classList.remove('open');
+
+                    document.getElementById('cardName').required = false;
+                    document.getElementById('cardNumber').required = false;
+                    document.getElementById('expiry').required = false;
+                    document.getElementById('cvv').required = false;
+                    document.getElementById('upiRef').required = false;
+
+                    if (this.value === 'card') {
+                        document.getElementById('paymentBodyCard').classList.add('open');
+                        document.getElementById('cardName').required = true;
+                        document.getElementById('cardNumber').required = true;
+                        document.getElementById('expiry').required = true;
+                        document.getElementById('cvv').required = true;
+                    } else if (this.value === 'upi') {
+                        document.getElementById('paymentBodyUPI').classList.add('open');
+                        document.getElementById('upiRef').required = true;
+                    } else if (this.value === 'cod') {
+                        document.getElementById('paymentBodyCOD').classList.add('open');
+                    }
+                });
+            });
+
+            // Trigger change on load to set defaults correctly
+            const checkedRadio = document.querySelector('input[name="paymentType"]:checked');
+            if (checkedRadio) checkedRadio.dispatchEvent(new Event('change'));
 
             renderSummary();
         })();
