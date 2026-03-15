@@ -14,7 +14,7 @@
     { id: 'lavender-oil', type: 'item', name: 'French Lavender Oil', price: 599, image: 'assets/oils.png', desc: 'Clinical-grade relaxation oil. Ethically sourced from Provence.', details: ['15ml Bottle', 'UV-Protective Glass', '100% Pure'] },
     { id: 'eucalyptus-oil', type: 'item', name: 'Eucalyptus Focus Oil', price: 599, image: 'assets/eucalyptus_oil.png', desc: 'Cognitive-boosting blend from Australian Eucalyptus leaves.', details: ['15ml Bottle', 'Stimulating Profile', '100% Pure'] },
     { id: 'candle', type: 'item', name: 'Sandalwood Soy Candle', price: 499, image: 'assets/sandalwood_candle.png', desc: 'Hand-poured, 40-hour burn time. Natural soy wax and cotton wick.', details: ['40 Hr Burn Time', 'Natural Soy', 'Cotton Wick'] },
-    { id: 'sleep-mask', type: 'item', name: 'Silk Sleep Mask', price: 699, image: 'assets/rest_box.png', desc: '100% Grade 6A mulberry silk. Adjustable, breathable, travel-ready.', details: ['Grade 6A Silk', 'Zero Light Leak', 'Adjustable'] },
+    { id: 'sleep-mask', type: 'item', name: 'Silk Sleep Mask', price: 699, image: 'assets/sleep_mask.png', desc: '100% Grade 6A mulberry silk. Adjustable, breathable, travel-ready.', details: ['Grade 6A Silk', 'Zero Light Leak', 'Adjustable'] },
     { id: 'worry-stone', type: 'item', name: 'Polished Worry Stone', price: 399, image: 'assets/grounding_box.png', desc: 'Smooth jade grounding stone for tactile anxiety relief.', details: ['Natural Jade', 'Pocket Sized', 'Geometrically Perfect'] },
     { id: 'calm-box', type: 'box', name: 'The Calm Protocol Box', price: 2499, image: 'assets/calm_box.png', desc: 'A complete system for nervous system regulation. Lavender oil, chamomile tea, and a mindfulness journal delivered monthly.', details: ['Monthly Supply', 'Curated by Therapists', 'Gift Ready'], perks: ['Expert-curated contents each cycle', 'RenewYou Community Forum access', 'Digital Companion App (iOS & Android)', 'Early access to new drops'] },
     { id: 'rest-box', type: 'box', name: 'The Rest Box', price: 2499, image: 'assets/rest_box.png', desc: 'Engineered for REM latency reduction. Silk mask, sleep tincture, and soy candle.', details: ['Clinical Sleep Aid', '3 Item Kit', 'Gift Ready'], perks: ['Expert-curated contents each cycle', 'RenewYou Community Forum access', 'Digital Companion App (iOS & Android)', 'Early access to new drops'] },
@@ -209,20 +209,11 @@
     const shopGrid = document.getElementById('brutalistShopGrid');
     if (!shopGrid) return;
 
-    let html = '';
-    PRODUCTS.forEach((p, idx) => {
-      const number = String(idx + 1).padStart(2, '0');
-      html += `
-        <a href="product.html?id=${p.id}" class="shop-list-item" data-type="${p.type}">
-          <div class="shop-list-num">#${number}</div>
-          <div class="shop-list-name"><h2>${p.name}</h2></div>
-          <div class="shop-list-type">${p.type.toUpperCase()}</div>
-          <div class="shop-list-price">${formatPrice(p.price)}</div>
-          <div class="shop-list-img-hover"><img src="${p.image}" alt="${p.name}"></div>
-        </a>
-      `;
-    });
-    shopGrid.innerHTML = html;
+    const countEl = document.getElementById('productCountDisplay');
+    const countLabel = document.getElementById('filterCountLabel');
+
+    // Show all products initially
+    renderFilteredGrid('all');
 
     // Filters
     const filterTabs = document.getElementById('filterTabs');
@@ -231,12 +222,35 @@
         tab.addEventListener('click', () => {
           filterTabs.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
           tab.classList.add('active');
-          const filter = tab.dataset.filter;
-          document.querySelectorAll('.shop-list-item').forEach(row => {
-            row.style.display = (filter === 'all' || row.dataset.type === filter) ? 'flex' : 'none';
-          });
+          renderFilteredGrid(tab.dataset.filter);
         });
       });
+    }
+
+    function renderFilteredGrid(filter) {
+      const filtered = filter === 'all' ? PRODUCTS : PRODUCTS.filter(p => p.type === filter);
+
+      if (countEl) countEl.textContent = String(filtered.length).padStart(2, '0');
+      if (countLabel) countLabel.textContent = filtered.length + ' object' + (filtered.length !== 1 ? 's' : '');
+
+      shopGrid.innerHTML = filtered.map(p => `
+        <a href="product.html?id=${p.id}" class="shop-card" data-type="${p.type}">
+          <div class="shop-card-img">
+            <img src="${p.image}" alt="${p.name}" loading="lazy">
+            <div class="shop-card-quick add-to-cart-btn"
+              data-id="${p.id}" data-name="${p.name}" data-price="${p.price}" data-img="${p.image}"
+              onclick="event.preventDefault();">+ Add to Basket</div>
+          </div>
+          <div class="shop-card-info">
+            <span class="shop-card-label">${p.type === 'box' ? 'Ritual Box' : 'Individual'}</span>
+            <div class="shop-card-title">${p.name}</div>
+            <div class="shop-card-footer">
+              <span class="shop-card-price">${formatPrice(p.price)}</span>
+              <span class="shop-card-arrow">→</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
     }
   }
 

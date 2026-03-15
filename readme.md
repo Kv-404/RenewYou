@@ -24,9 +24,9 @@ Many individuals struggle to find the right mental wellness resources. RenewYou 
 
 - 🛍️ **Subscription Box Plans** — Choose from different subscription tiers suited to your wellness goals
 - 🧘 **Curated Product Selection** — Each box includes hand-picked items like journals, aromatherapy oils, and wellness books
-- 🎯 **Personalization** — Boxes tailored to the subscriber's mental health preferences and goals
+- 🎯 **Personalization** — Take a diagnostic quiz to get matched with the right box
 - 🛒 **E-Commerce Flow** — Browse products, select a plan, and complete checkout seamlessly
-- 📦 **Box Preview** — See what's inside before you subscribe
+- 🎁 **Gift a Box** — Send a box to someone with a personal message and optional gift wrap
 - 📱 **Responsive Design** — Works across desktop, tablet, and mobile devices
 - 🌐 **Clean UI** — Calming, wellness-oriented design for an immersive user experience
 
@@ -36,14 +36,18 @@ Many individuals struggle to find the right mental wellness resources. RenewYou 
 
 ```
 RenewYou/
-├── index.html          # Main landing page
-├── css/
-│   └── style.css       # Stylesheet
-├── js/
-│   └── script.js       # JavaScript logic
-├── assets/
-│   └── images/         # Product and UI images
-└── README.md
+├── index.html          # Landing page
+├── shop.html           # Product collection (grid view with filters)
+├── product.html        # Individual product detail page
+├── quiz.html           # Diagnostic quiz (recommends a box)
+├── cart.html            # Shopping cart
+├── checkout.html        # Checkout (payment, subscription, gifting)
+├── global.css           # Global stylesheet (colors, typography, layout)
+├── app.js               # Core JS (product data, cart, shop rendering, quiz logic)
+├── checkout.js          # Checkout page JS (subscription toggle, payment, form)
+├── assets/              # Product images and icons
+├── Document/            # Case study report and presentation
+└── readme.md            # This file
 ```
 
 ---
@@ -76,7 +80,7 @@ RenewYou/
 ## 🛠️ Built With
 
 - **HTML5** — Page structure and content
-- **CSS3** — Styling, animations, and responsive layout
+- **CSS3** — Styling and responsive layout
 - **JavaScript (Vanilla)** — Interactivity and dynamic content
 
 ---

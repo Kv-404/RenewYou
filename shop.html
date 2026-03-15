@@ -327,11 +327,11 @@
 
     <!-- FILTER BAR -->
     <div class="container">
-        <div class="filter-bar">
-            <div class="filter-pills" id="filterPills">
-                <button class="filter-pill active" data-filter="all">All</button>
-                <button class="filter-pill" data-filter="item">Individual</button>
-                <button class="filter-pill" data-filter="box">Ritual Box</button>
+        <div class="filter-bar" id="filterTabs">
+            <div class="filter-pills">
+                <button class="filter-tab filter-pill active" data-filter="all">All</button>
+                <button class="filter-tab filter-pill" data-filter="item">Individual</button>
+                <button class="filter-tab filter-pill" data-filter="box">Ritual Box</button>
             </div>
             <span class="filter-count" id="filterCountLabel"></span>
         </div>
@@ -340,8 +340,8 @@
     <!-- PRODUCT GRID -->
     <div class="shop-grid-wrapper">
         <div class="container">
-            <div class="shop-grid" id="shopProductGrid">
-                <!-- Rendered by JS below -->
+            <div class="shop-grid" id="brutalistShopGrid">
+                <!-- Rendered by app.js -->
             </div>
         </div>
     </div>
@@ -360,99 +360,8 @@
         </div>
     </footer>
 
+    <!-- app.js renders the shop grid and handles filters -->
     <script src="app.js"></script>
-    <script>
-        (function () {
-            // Pull products from the same PRODUCTS array in app.js scope
-            // app.js doesn't expose an API, so we replicate the product list here for rendering
-            // and rely on app.js event delegation for add-to-cart clicks.
-
-            const PRODUCTS_SHOP = [
-                { id: 'journal', type: 'item', name: 'Mindfulness Journal', price: 799, image: 'assets/journal.png' },
-                { id: 'lavender-oil', type: 'item', name: 'French Lavender Oil', price: 599, image: 'assets/oils.png' },
-                { id: 'eucalyptus-oil', type: 'item', name: 'Eucalyptus Focus Oil', price: 599, image: 'assets/eucalyptus_oil.png' },
-                { id: 'candle', type: 'item', name: 'Sandalwood Soy Candle', price: 499, image: 'assets/sandalwood_candle.png' },
-                { id: 'sleep-mask', type: 'item', name: 'Silk Sleep Mask', price: 699, image: 'assets/rest_box.png' },
-                { id: 'worry-stone', type: 'item', name: 'Polished Worry Stone', price: 399, image: 'assets/grounding_box.png' },
-                { id: 'weighted-blanket', type: 'item', name: 'Deep Pressure Blanket', price: 12900, image: 'assets/weighted_blanket.png' },
-                { id: 'therapy-lamp', type: 'item', name: 'SAD Light Therapy Lamp', price: 4500, image: 'assets/therapy_lamp.png' },
-                { id: 'sound-machine', type: 'item', name: 'White Noise Machine', price: 3500, image: 'assets/sound_machine.png' },
-                { id: 'meditation-cushion', type: 'item', name: 'Zafu Meditation Cushion', price: 5900, image: 'assets/meditation_cushion.png' },
-                { id: 'calm-box', type: 'box', name: 'The Calm Protocol Box', price: 2499, image: 'assets/calm_box.png' },
-                { id: 'rest-box', type: 'box', name: 'The Rest Box', price: 2499, image: 'assets/rest_box.png' },
-                { id: 'clarity-box', type: 'box', name: 'The Clarity Box', price: 2499, image: 'assets/clarity_box.png' },
-                { id: 'grounding-box', type: 'box', name: 'The Grounding Box', price: 2499, image: 'assets/grounding_box.png' },
-            ];
-
-            function formatPrice(n) {
-                return '₹' + n.toLocaleString('en-IN');
-            }
-
-            function renderGrid(filter) {
-                const grid = document.getElementById('shopProductGrid');
-                const countEl = document.getElementById('productCountDisplay');
-                const countLabel = document.getElementById('filterCountLabel');
-
-                const filtered = filter === 'all' ? PRODUCTS_SHOP : PRODUCTS_SHOP.filter(p => p.type === filter);
-
-                countEl.textContent = String(filtered.length).padStart(2, '0');
-                countLabel.textContent = `${filtered.length} object${filtered.length !== 1 ? 's' : ''}`;
-
-                if (filtered.length === 0) {
-                    grid.innerHTML = `<div class="no-results">No products in this category.</div>`;
-                    return;
-                }
-
-                grid.innerHTML = filtered.map((p, i) => `
-                    <a href="product.html?id=${p.id}" class="shop-card reveal" style="transition-delay: ${(i % 3) * 0.08}s;">
-                        <div class="shop-card-img">
-                            <img src="${p.image}" alt="${p.name}" loading="lazy">
-                            <div class="shop-card-quick add-to-cart-btn"
-                                data-id="${p.id}"
-                                data-name="${p.name}"
-                                data-price="${p.price}"
-                                data-img="${p.image}"
-                                onclick="event.preventDefault();">
-                                + Add to Basket
-                            </div>
-                        </div>
-                        <div class="shop-card-info">
-                            <span class="shop-card-label">${p.type === 'box' ? 'Ritual Box' : 'Individual'}</span>
-                            <div class="shop-card-title">${p.name}</div>
-                            <div class="shop-card-footer">
-                                <span class="shop-card-price">${formatPrice(p.price)}</span>
-                                <span class="shop-card-arrow">→</span>
-                            </div>
-                        </div>
-                    </a>
-                `).join('');
-
-                // Re-observe new reveal elements
-                grid.querySelectorAll('.reveal').forEach(el => {
-                    revealObs.observe(el);
-                });
-            }
-
-            // Intersection observer for staggered reveal
-            const revealObs = new IntersectionObserver((entries) => {
-                entries.forEach(e => {
-                    if (e.isIntersecting) { e.target.classList.add('active'); }
-                });
-            }, { threshold: 0.05, rootMargin: '0px 0px -30px 0px' });
-
-            // Filter pills
-            document.querySelectorAll('.filter-pill').forEach(pill => {
-                pill.addEventListener('click', () => {
-                    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
-                    pill.classList.add('active');
-                    renderGrid(pill.dataset.filter);
-                });
-            });
-
-            // Initial render
-            document.addEventListener('DOMContentLoaded', () => renderGrid('all'));
-        })();
-    </script>
 </body>
 
 </html>

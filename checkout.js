@@ -7,8 +7,8 @@
 
 document.addEventListener('DOMContentLoaded', function () {
 
-  // Uses CART_KEY from app.js if available, otherwise fallback
-  const CART_KEY = window.CART_KEY || 'ryCart_v7';
+  // Cart key — must match app.js
+  const CART_KEY = 'ryCart_v7';
 
   function getCart() {
     try {
@@ -19,9 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function formatPrice(n) {
-    if (typeof window.formatPrice === 'function') {
-      return window.formatPrice(n);
-    }
     return '₹' + n.toLocaleString('en-IN');
   }
 
